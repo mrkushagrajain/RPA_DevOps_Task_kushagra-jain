@@ -1,39 +1,23 @@
-This project demonstrates a mini end-to-end DevOps automation setup for an
-Automation Anywhere A360 RPA platform, deployed on Azure (simulated).
+# RPA DevOps Automation – Automation Anywhere A360
 
-🎯 Objectives
+## Introduction
 
-Enable CI/CD for RPA bots
+This repository demonstrates a **mini end-to-end DevOps automation setup** for an  
+**Automation Anywhere A360 RPA platform**, deployed on **Azure (simulated)**.
 
-Apply enterprise DevOps best practices
+The project is designed to showcase how **enterprise RPA platforms** can be operated using
+modern **DevOps principles**, even when a live Azure subscription or Automation Anywhere
+tenant is not available.
 
-Operate without a live Azure or Automation Anywhere tenant
+---
 
-The solution mirrors real-world enterprise RPA operations while remaining fully portable.
+## 🏗️ Architecture
 
-✨ Features
+The solution follows a **standard enterprise CI/CD architecture** for RPA platforms.
 
-Key capabilities implemented
+### High-Level Architecture
 
-🧱 Infrastructure as Code (IaC) using Terraform
-
-🔄 CI/CD automation for RPA bot lifecycle
-
-🌍 Environment separation (Dev / Test / Prod)
-
-🔐 Secure configuration handling (simulated)
-
-📦 Artifact-based promotion strategy
-
-📊 Deployment logs & test reports
-
-🔁 Manual rollback support
-
-🏗️ Architecture
-
-High-level system design
-
-🔹 Architecture Flow
+```text
 Developer
    │
    │  (Git Commit)
@@ -46,97 +30,75 @@ Azure DevOps Pipeline (YAML)
    ├── Build & Validate
    │   └── Package RPA Bots
    │
-   ├── Deploy Dev (Mock REST)
-   │   └── A360 Control Room (Simulated)
+   ├── Deploy Dev
+   │   └── Automation Anywhere Control Room (Mock REST)
    │
-   ├── Deploy Test (Mock REST)
+   ├── Deploy Test
    │   └── Artifact Promotion
    │
    ├── Manual Approval Gate
    │
-   └── Deploy Prod (Mock REST)
-       └── Final Promotion
+   └── Deploy Prod
+       └── Final Production Deployment
+Infrastructure Components (Simulated)
+Resource Group
+Logical container for all RPA-related resources
 
-🔹 Infrastructure Components (Terraform – Simulated)
-Component	Purpose
-Resource Group	Logical container for RPA platform
-Storage Account	Stores bot packages & artifacts
-VM / App Service	Control Room & Bot Runners (mock)
-Key Vault	Secrets storage (simulated)
+Storage Account
+Stores bot packages and pipeline artifacts
 
-Infrastructure is defined using Terraform but not applied to a real Azure subscription (Option B).
+VM / App Service (Mock)
+Represents Automation Anywhere Control Room and Bot Runners
 
-🧰 Technologies Used
+Key Vault (Mock)
+Simulates secure storage for secrets and credentials
 
-Tools & platforms
+Infrastructure is defined using Terraform, but not deployed to a real Azure environment.
 
-Category	Technology
-CI/CD	Azure DevOps
-IaC	Terraform
-RPA	Automation Anywhere A360
-Scripting	Python
-Configuration	YAML
-Version Control	Git & GitHub
-🔄 CI/CD Pipeline
+🔄 CI/CD Flow
+The CI/CD pipeline is implemented using Azure DevOps YAML pipelines.
 
-How automation works
+CI/CD Stages
+Build & Validate
 
-🔹 Pipeline Stages
-Stage	Description
-Build & Validate	Validate bot structure & package artifact
-Deploy Dev	Automated deployment to Dev
-Deploy Test	Artifact promotion to Test
-Manual Gate	Approval before Prod
-Deploy Prod	Production deployment
-Rollback	Manual rollback to previous version
+Bot structure and manifest validation
 
-✔ Build once, deploy everywhere
+Packaging of RPA bot artifacts
 
-🤖 Automation Anywhere Integration
+Artifact versioning
 
-Control Room interaction
+Deploy to Dev
 
-🔹 Integration Method
+Automatic deployment using mock Control Room REST APIs
 
-✔ REST API interaction (Mocked)
+Uses Dev-specific configuration
 
-🔹 Simulated Endpoints
-POST /oauth2/token
-POST /repository/packages
-POST /deployments
+Deploy to Test
 
+Promotes the same artifact from Dev to Test
 
-Implemented via aa_deploy.py, designed to be easily extended to real APIs.
+No rebuilds (build once, deploy many)
 
-📊 Monitoring & Logging
+Manual Approval Gate
 
-Observability & feedback
+Business or release approval before production
 
-📝 Pipeline execution logs in Azure DevOps
+Deploy to Prod
 
-📂 Deployment logs per environment
+Final production deployment using the approved artifact
 
-🧪 JUnit XML test reports
+Rollback (Manual)
 
-📢 Alert simulation via notify.py
-
-Published Artifacts
-
-logs-dev
-
-logs-test
-
-logs-prod
+Re-deploys a previously built artifact if needed
 
 🚀 Deployment Strategy
+Strategy Used: Artifact-Based Promotion
+The deployment model follows a build-once, deploy-many approach.
 
-Release approach
+Deployment Flow
+Build the bot package once
 
-🔹 Artifact-Based Promotion
-
-Build once
-
-Promote the same artifact to:
+Promote the same artifact through:
 
 Dev
 
@@ -144,32 +106,82 @@ Test
 
 Prod
 
-No rebuilds between environments
+No rebuilding between environments
 
-✅ Prevents drift
-✅ Ensures reliability
+Benefits
+Prevents configuration drift
 
-🔁 Rollback Strategy
+Ensures production uses tested artifacts
 
-Failure recovery
+Aligns with enterprise DevOps best practices
 
-Manual rollback trigger
+📊 Monitoring & Logging
+Basic observability is implemented to track pipeline and deployment activity.
 
-Re-deploy previous artifact
+What Is Monitored
+Pipeline execution logs in Azure DevOps
 
-Logs & reports preserved
+Bot deployment status logs stored in logs/
+
+JUnit XML reports for deployment steps
+
+Log Artifacts
+logs-dev
+
+logs-test
+
+logs-prod
+
+Alert Simulation
+Alerts are simulated using a notification script
+
+Can be extended to Email, Microsoft Teams, or Slack
 
 ⚖️ Assumptions & Trade-offs
 Assumptions
+No live Azure subscription is available
 
-No live Azure or Automation Anywhere tenant
+No live Automation Anywhere A360 tenant is available
 
-RPA bots are package-based
+RPA bots are packaged as deployable artifacts
 
-Control Room APIs are REST-driven
+Control Room interactions are REST-based
 
 Trade-offs
-Decision	Trade-off
-Mock APIs	No real bot execution
-Simulated secrets	No real Key Vault
-Simple bot logic	Focus on DevOps, not bot complexity
+Mock REST APIs
+→ No real bot execution, but realistic API flow
+
+Simulated Key Vault
+→ Secrets are not real, but handled securely in design
+
+Simple bot implementation
+→ Focus is on DevOps automation, not bot complexity
+
+These trade-offs were intentional to keep the solution portable, testable, and focused on DevOps practices.
+
+Conclusion
+This project demonstrates:
+
+Infrastructure as Code using Terraform
+
+CI/CD automation for RPA bots
+
+Environment-aware deployments
+
+Monitoring, logging, and rollback strategies
+
+The overall design closely mirrors how Automation Anywhere A360 would be operated
+in a real enterprise Azure environment, while remaining fully executable in a
+simulated setup.
+
+
+
+
+
+
+
+
+
+
+
+New version of GPT available - Continue chatting to use the old version, or start a new chat for the latest version.
