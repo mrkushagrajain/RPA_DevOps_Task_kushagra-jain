@@ -1,0 +1,2 @@
+# Placeholder bot logic (your A360 package/scripts would go here)
+echo "Hello from A360 Bot (placeholder)"

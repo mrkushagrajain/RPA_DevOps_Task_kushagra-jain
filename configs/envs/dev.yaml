@@ -1,0 +1,8 @@
+name: dev
+a360:
+  folder: "Bots/Dev"
+  queue: "DEV_QUEUE"
+deploy:
+  concurrency: 1
+storage:
+  artifact_path: "dist"

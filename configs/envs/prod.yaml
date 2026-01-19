@@ -1,0 +1,8 @@
+name: prod
+a360:
+  folder: "Bots/Prod"
+  queue: "PROD_QUEUE"
+deploy:
+  concurrency: 3
+storage:
+  artifact_path: "dist"

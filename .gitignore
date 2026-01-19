@@ -1,0 +1,8 @@
+.venv/
+dist/
+logs/
+reports/
+__pycache__/
+*.pyc
+*.tfstate
+*.tfstate.*
