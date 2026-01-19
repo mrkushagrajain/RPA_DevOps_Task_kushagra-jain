@@ -40,148 +40,122 @@ Azure DevOps Pipeline (YAML)
    │
    └── Deploy Prod
        └── Final Production Deployment
-Infrastructure Components (Simulated)
-Resource Group
-Logical container for all RPA-related resources
+## 🏗️ Infrastructure Components (Simulated)
 
-Storage Account
-Stores bot packages and pipeline artifacts
+The infrastructure is designed to represent a typical enterprise Azure setup for an RPA platform.
 
-VM / App Service (Mock)
-Represents Automation Anywhere Control Room and Bot Runners
+### Resource Group
+- Logical container for all RPA-related resources
 
-Key Vault (Mock)
-Simulates secure storage for secrets and credentials
+### Storage Account
+- Stores RPA bot packages
+- Stores CI/CD pipeline artifacts
 
-Infrastructure is defined using Terraform, but not deployed to a real Azure environment.
+### VM / App Service (Mock)
+- Represents Automation Anywhere Control Room
+- Represents Bot Runner environments
 
-🔄 CI/CD Flow
-The CI/CD pipeline is implemented using Azure DevOps YAML pipelines.
+### Key Vault (Mock)
+- Simulates secure storage for secrets and credentials
 
-CI/CD Stages
-Build & Validate
+> Infrastructure is defined using **Terraform**, but it is **not deployed to a real Azure environment**.
 
-Bot structure and manifest validation
+---
 
-Packaging of RPA bot artifacts
+## 🔄 CI/CD Flow
 
-Artifact versioning
+The CI/CD pipeline is implemented using **Azure DevOps YAML pipelines**.
 
-Deploy to Dev
+### CI/CD Stages
 
-Automatic deployment using mock Control Room REST APIs
+#### Build & Validate
+- Bot structure and manifest validation
+- Packaging of RPA bot artifacts
+- Artifact versioning
 
-Uses Dev-specific configuration
+#### Deploy to Dev
+- Automatic deployment using mock Control Room REST APIs
+- Uses Dev-specific configuration
 
-Deploy to Test
+#### Deploy to Test
+- Promotes the same artifact from Dev to Test
+- No rebuilds (**build once, deploy many**)
 
-Promotes the same artifact from Dev to Test
+#### Manual Approval Gate
+- Business or release approval before production deployment
 
-No rebuilds (build once, deploy many)
+#### Deploy to Prod
+- Final production deployment using the approved artifact
 
-Manual Approval Gate
+#### Rollback (Manual)
+- Re-deploys a previously built artifact if required
 
-Business or release approval before production
+---
 
-Deploy to Prod
+## 🚀 Deployment Strategy
 
-Final production deployment using the approved artifact
+### Strategy Used: Artifact-Based Promotion
 
-Rollback (Manual)
+The deployment model follows a **build-once, deploy-many** approach.
 
-Re-deploys a previously built artifact if needed
+### Deployment Flow
+- Build the bot package once
+- Promote the same artifact through:
+  - Dev
+  - Test
+  - Prod
+- No rebuilding between environments
 
-🚀 Deployment Strategy
-Strategy Used: Artifact-Based Promotion
-The deployment model follows a build-once, deploy-many approach.
+### Benefits
+- Prevents configuration drift
+- Ensures production uses tested artifacts
+- Aligns with enterprise DevOps best practices
 
-Deployment Flow
-Build the bot package once
+---
 
-Promote the same artifact through:
+## 📊 Monitoring & Logging
 
-Dev
-
-Test
-
-Prod
-
-No rebuilding between environments
-
-Benefits
-Prevents configuration drift
-
-Ensures production uses tested artifacts
-
-Aligns with enterprise DevOps best practices
-
-📊 Monitoring & Logging
 Basic observability is implemented to track pipeline and deployment activity.
 
-What Is Monitored
-Pipeline execution logs in Azure DevOps
+### What Is Monitored
+- Pipeline execution logs in Azure DevOps
+- Bot deployment status logs stored in `logs/`
+- JUnit XML reports for deployment steps
 
-Bot deployment status logs stored in logs/
+### Log Artifacts
+- `logs-dev`
+- `logs-test`
+- `logs-prod`
 
-JUnit XML reports for deployment steps
+### Alert Simulation
+- Alerts are simulated using a notification script
+- Can be extended to:
+  - Email
+  - Microsoft Teams
+  - Slack
 
-Log Artifacts
-logs-dev
+---
 
-logs-test
+## ⚖️ Assumptions & Trade-offs
 
-logs-prod
+### Assumptions
+- No live Azure subscription is available
+- No live Automation Anywhere A360 tenant is available
+- RPA bots are packaged as deployable artifacts
+- Control Room interactions are REST-based
 
-Alert Simulation
-Alerts are simulated using a notification script
+### Trade-offs
 
-Can be extended to Email, Microsoft Teams, or Slack
+#### Mock REST APIs
+- No real bot execution
+- Realistic Control Room API flow is demonstrated
 
-⚖️ Assumptions & Trade-offs
-Assumptions
-No live Azure subscription is available
+#### Simulated Key Vault
+- Secrets are not real
+- Secure handling is demonstrated by design
 
-No live Automation Anywhere A360 tenant is available
+#### Simple Bot Implementation
+- Focus is on DevOps automation
+- Bot logic complexity is intentionally minimal
 
-RPA bots are packaged as deployable artifacts
-
-Control Room interactions are REST-based
-
-Trade-offs
-Mock REST APIs
-→ No real bot execution, but realistic API flow
-
-Simulated Key Vault
-→ Secrets are not real, but handled securely in design
-
-Simple bot implementation
-→ Focus is on DevOps automation, not bot complexity
-
-These trade-offs were intentional to keep the solution portable, testable, and focused on DevOps practices.
-
-Conclusion
-This project demonstrates:
-
-Infrastructure as Code using Terraform
-
-CI/CD automation for RPA bots
-
-Environment-aware deployments
-
-Monitoring, logging, and rollback strategies
-
-The overall design closely mirrors how Automation Anywhere A360 would be operated
-in a real enterprise Azure environment, while remaining fully executable in a
-simulated setup.
-
-
-
-
-
-
-
-
-
-
-
-New version of GPT available - Continue chatting to use the old version, or start a new chat for the latest version.
+> These trade-offs were intentional to keep the solution **portable, testable, and focused on DevOps practices**.
